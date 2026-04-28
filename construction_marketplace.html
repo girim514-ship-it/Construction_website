@@ -1,0 +1,519 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --brand:#1A3C5E;--brand-light:#2563A8;--brand-accent:#E88C2A;
+    --surface:#fff;--page:#F4F6F9;--border:rgba(0,0,0,0.1);
+    --text:#1a1a1a;--text2:#555;--text3:#888;
+    --radius:8px;--radius-lg:12px;
+  }
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--page);color:var(--text);font-size:15px}
+  a{text-decoration:none;color:inherit}
+
+  /* HEADER */
+  .header{background:var(--brand);color:#fff;padding:0 2rem}
+  .header-top{display:flex;align-items:center;gap:1rem;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.12)}
+  .logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#fff;flex-shrink:0}
+  .logo span{color:var(--brand-accent)}
+  .search-bar{flex:1;display:flex;background:rgba(255,255,255,0.12);border-radius:6px;overflow:hidden;max-width:560px}
+  .search-bar input{flex:1;background:transparent;border:none;padding:9px 14px;color:#fff;font-size:14px;outline:none}
+  .search-bar input::placeholder{color:rgba(255,255,255,0.5)}
+  .search-bar select{background:rgba(255,255,255,0.15);border:none;border-left:1px solid rgba(255,255,255,0.2);color:#fff;padding:0 10px;font-size:13px;outline:none;cursor:pointer}
+  .search-bar button{background:var(--brand-accent);border:none;padding:0 16px;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+  .header-actions{display:flex;gap:8px;margin-left:auto}
+  .btn-ghost{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer}
+  .btn-primary{background:var(--brand-accent);border:none;color:#fff;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+  .header-nav{display:flex;gap:0;padding:2px 0}
+  .header-nav a{color:rgba(255,255,255,0.8);font-size:13px;padding:9px 14px;display:block;transition:color 0.15s}
+  .header-nav a:hover,.header-nav a.active{color:#fff;background:rgba(255,255,255,0.1)}
+
+  /* HERO BANNER */
+  .hero{background:linear-gradient(135deg,#1A3C5E 0%,#2563A8 100%);padding:36px 2rem;display:flex;align-items:center;gap:2rem;color:#fff}
+  .hero-text h1{font-size:26px;font-weight:700;margin-bottom:8px;line-height:1.25}
+  .hero-text p{color:rgba(255,255,255,0.75);font-size:14px;margin-bottom:18px}
+  .hero-stats{display:flex;gap:2rem;margin-top:4px}
+  .hero-stat{text-align:center}
+  .hero-stat .n{font-size:22px;font-weight:700;color:var(--brand-accent)}
+  .hero-stat .l{font-size:12px;color:rgba(255,255,255,0.6)}
+  .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
+  .btn-accent{background:var(--brand-accent);color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:600;font-size:14px;cursor:pointer}
+  .btn-outline-white{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.4);padding:9px 20px;border-radius:6px;font-weight:600;font-size:14px;cursor:pointer}
+
+  /* MAIN LAYOUT */
+  .main{display:flex;gap:0;padding:0;max-width:100%}
+  .sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:1.25rem;min-height:calc(100vh - 160px)}
+  .content{flex:1;padding:1.5rem;overflow:hidden}
+  .sidebar h3{font-size:12px;font-weight:700;letter-spacing:0.06em;color:var(--text3);text-transform:uppercase;margin:1rem 0 8px}
+  .sidebar h3:first-child{margin-top:0}
+  .cat-item{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:13.5px;color:var(--text2)}
+  .cat-item:hover,.cat-item.active{background:#EEF4FF;color:var(--brand-light)}
+  .cat-item .cnt{font-size:12px;background:#e8edf5;color:#888;padding:1px 7px;border-radius:20px}
+  .cat-item.active .cnt{background:var(--brand-light);color:#fff}
+  .price-range{margin:8px 0 4px}
+  .price-range input[type=range]{width:100%;accent-color:var(--brand-light)}
+  .price-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-top:4px}
+  .filter-group label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);padding:4px 0;cursor:pointer}
+  .filter-group input[type=checkbox]{accent-color:var(--brand-light)}
+
+  /* TOOLBAR */
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+  .toolbar-left{font-size:14px;color:var(--text2)}
+  .toolbar-left strong{color:var(--text)}
+  .toolbar-right{display:flex;gap:8px;align-items:center}
+  .sort-select{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;background:var(--surface);cursor:pointer;color:var(--text)}
+  .view-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .view-btn{padding:6px 10px;background:var(--surface);border:none;cursor:pointer;color:var(--text3)}
+  .view-btn.active{background:#EEF4FF;color:var(--brand-light)}
+
+  /* PRODUCT GRID */
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem}
+  .product-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:box-shadow 0.2s,transform 0.15s}
+  .product-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.1);transform:translateY(-2px)}
+  .product-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:42px;background:#f7f9fc}
+  .product-body{padding:12px}
+  .product-cat{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+  .product-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+  .product-supplier{font-size:12px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+  .verified-badge{width:14px;height:14px;background:#1D9E75;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700}
+  .product-price{font-size:16px;font-weight:700;color:var(--brand)}
+  .product-unit{font-size:11px;color:var(--text3);font-weight:400}
+  .product-footer{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-top:1px solid var(--border);background:#fafbfc}
+  .product-moq{font-size:11px;color:var(--text3)}
+  .btn-cart{background:var(--brand-light);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer}
+  .btn-cart:hover{background:var(--brand)}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-bottom:6px}
+  .badge-new{background:#EAF3DE;color:#3B6D11}
+  .badge-hot{background:#FAECE7;color:#993C1D}
+  .badge-bulk{background:#FFF3E0;color:#854F0B}
+  .rating{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);margin-bottom:6px}
+  .stars{color:#E8A020;font-size:12px}
+
+  /* SERVICE CARDS */
+  .section-title{font-size:17px;font-weight:700;margin-bottom:1rem;color:var(--text);display:flex;align-items:center;gap:10px}
+  .section-title span{height:3px;width:28px;background:var(--brand-accent);border-radius:2px;display:inline-block}
+  .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:2rem}
+  .service-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;cursor:pointer;transition:box-shadow 0.2s}
+  .service-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+  .service-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+  .service-name{font-size:15px;font-weight:600;margin-bottom:4px}
+  .service-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+  .service-price{font-size:14px;font-weight:700;color:var(--brand)}
+  .service-meta{font-size:12px;color:var(--text3);margin-top:4px}
+
+  /* CART PANEL */
+  .cart-fab{position:fixed;top:14px;right:2rem;background:var(--brand-accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:100}
+  .cart-count{background:rgba(255,255,255,0.3);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+
+  /* TABS */
+  .tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:1.5rem}
+  .tab{padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px}
+  .tab.active{color:var(--brand-light);border-bottom-color:var(--brand-light)}
+  .tab:hover{color:var(--brand)}
+
+  /* SELLER PANEL */
+  .seller-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .form-group{margin-bottom:1rem}
+  .form-group label{display:block;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px}
+  .form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;color:var(--text);background:var(--surface);outline:none}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--brand-light);box-shadow:0 0 0 3px rgba(37,99,168,0.1)}
+  .form-group textarea{resize:vertical;min-height:80px}
+  .upload-area{border:2px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;color:var(--text3);cursor:pointer;font-size:13px}
+  .upload-area:hover{border-color:var(--brand-light);background:#f0f5ff}
+
+  /* STATS BAR */
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
+  .stat-card .lbl{font-size:12px;color:var(--text3);margin-bottom:4px}
+  .stat-card .val{font-size:22px;font-weight:700;color:var(--brand)}
+  .stat-card .chg{font-size:12px;color:#1D9E75;margin-top:2px}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--brand);color:#fff;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:500;opacity:0;transition:opacity 0.3s;z-index:200;pointer-events:none}
+  .toast.show{opacity:1}
+
+  /* RESPONSIVE */
+  @media(max-width:700px){
+    .sidebar{display:none}
+    .hero-stats{flex-wrap:wrap;gap:1rem}
+    .form-grid{grid-template-columns:1fr}
+    .stats-bar{grid-template-columns:1fr 1fr}
+  }
+</style>
+
+<h2 class="sr-only">BuildMart — Construction Marketplace for buyers and sellers of materials, tools, and services</h2>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Build<span>Mart</span></div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search materials, tools, services..." id="searchInput" oninput="filterProducts()">
+      <select id="catFilter" onchange="filterProducts()">
+        <option value="all">All Categories</option>
+        <option value="materials">Materials</option>
+        <option value="tools">Tools & Hardware</option>
+        <option value="services">Services</option>
+      </select>
+      <button onclick="filterProducts()">Search</button>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" onclick="showTab('seller')">Sell on BuildMart</button>
+      <button class="btn-primary" onclick="showTab('buyer')">Sign In</button>
+    </div>
+  </div>
+  <div class="header-nav">
+    <a href="#" class="active" onclick="showTab('buyer');return false">Marketplace</a>
+    <a href="#" onclick="showTab('services');return false">Services & Labour</a>
+    <a href="#" onclick="showTab('seller');return false">Seller Hub</a>
+    <a href="#" onclick="showTab('orders');return false">Orders</a>
+    <a href="#">RFQ / Bulk Quote</a>
+    <a href="#">Trade Finance</a>
+  </div>
+</div>
+
+<!-- CART FAB -->
+<button class="cart-fab" onclick="showCart()">
+  Cart <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- HERO -->
+<div class="hero" id="heroSection">
+  <div class="hero-text">
+    <h1>Your One-Stop Construction Marketplace</h1>
+    <p>Source materials, tools & hire subcontractors — all in one platform</p>
+    <div class="hero-ctas">
+      <button class="btn-accent" onclick="showTab('buyer')">Browse Products</button>
+      <button class="btn-outline-white" onclick="showTab('services')">Find Subcontractors</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">12,400+</div><div class="l">Products listed</div></div>
+    <div class="hero-stat"><div class="n">840+</div><div class="l">Verified suppliers</div></div>
+    <div class="hero-stat"><div class="n">3,200+</div><div class="l">Subcontractors</div></div>
+    <div class="hero-stat"><div class="n">96%</div><div class="l">On-time delivery</div></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebarEl">
+    <h3>Categories</h3>
+    <div class="cat-item active" onclick="setCat('all',this)">All Products <span class="cnt">480</span></div>
+    <div class="cat-item" onclick="setCat('cement',this)">Cement & Concrete <span class="cnt">94</span></div>
+    <div class="cat-item" onclick="setCat('steel',this)">Steel & Metal <span class="cnt">112</span></div>
+    <div class="cat-item" onclick="setCat('wood',this)">Timber & Wood <span class="cnt">78</span></div>
+    <div class="cat-item" onclick="setCat('tools',this)">Tools & Hardware <span class="cnt">156</span></div>
+    <div class="cat-item" onclick="setCat('electrical',this)">Electrical <span class="cnt">40</span></div>
+
+    <h3>Price Range</h3>
+    <div class="price-range">
+      <input type="range" min="0" max="50000" value="50000" id="priceRange" oninput="document.getElementById('priceMax').textContent='$'+parseInt(this.value).toLocaleString()">
+    </div>
+    <div class="price-labels"><span>$0</span><span id="priceMax">$50,000</span></div>
+
+    <h3>Supplier</h3>
+    <div class="filter-group">
+      <label><input type="checkbox" checked> Verified Suppliers</label>
+      <label><input type="checkbox"> Gold Members</label>
+      <label><input type="checkbox"> Local Suppliers</label>
+    </div>
+
+    <h3>Availability</h3>
+    <div class="filter-group">
+      <label><input type="checkbox" checked> In Stock</label>
+      <label><input type="checkbox"> Ships in 3 days</label>
+      <label><input type="checkbox"> Bulk Available</label>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content">
+
+    <!-- BUYER TAB -->
+    <div id="tab-buyer">
+      <div class="tabs">
+        <div class="tab active" onclick="switchSubTab('products',this)">Products</div>
+        <div class="tab" onclick="switchSubTab('services',this)">Services & Labour</div>
+        <div class="tab" onclick="switchSubTab('rfq',this)">Request Quote</div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div id="subtab-products">
+        <div class="toolbar">
+          <div class="toolbar-left">Showing <strong id="resultCount">12</strong> products</div>
+          <div class="toolbar-right">
+            <select class="sort-select">
+              <option>Sort: Relevance</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest First</option>
+              <option>Most Popular</option>
+            </select>
+            <div class="view-toggle">
+              <button class="view-btn active">▦</button>
+              <button class="view-btn">☰</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+
+      <!-- SERVICES SUB-TAB -->
+      <div id="subtab-services" style="display:none">
+        <p class="section-title"><span></span>Subcontractors & Labour Services</p>
+        <div class="service-grid" id="serviceGrid"></div>
+      </div>
+
+      <!-- RFQ -->
+      <div id="subtab-rfq" style="display:none">
+        <div class="seller-form">
+          <p class="section-title" style="margin-bottom:1.25rem"><span></span>Request for Quotation</p>
+          <div class="form-grid">
+            <div class="form-group"><label>Material / Service Needed</label><input placeholder="e.g. 500 bags of OPC Cement 42.5R"></div>
+            <div class="form-group"><label>Quantity Required</label><input placeholder="e.g. 500 units / bags / m³"></div>
+            <div class="form-group"><label>Project Location</label><input placeholder="City, State"></div>
+            <div class="form-group"><label>Delivery Date</label><input type="date"></div>
+          </div>
+          <div class="form-group"><label>Project Description</label><textarea placeholder="Describe your project and specific requirements..."></textarea></div>
+          <button class="btn-accent" style="width:100%;padding:12px;font-size:15px" onclick="showToast('RFQ submitted! Suppliers will respond within 24 hours.')">Submit RFQ to 200+ Suppliers</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELLER TAB -->
+    <div id="tab-seller" style="display:none">
+      <div class="stats-bar">
+        <div class="stat-card"><div class="lbl">Total Revenue</div><div class="val">$84,320</div><div class="chg">+12% this month</div></div>
+        <div class="stat-card"><div class="lbl">Active Listings</div><div class="val">34</div><div class="chg">2 pending review</div></div>
+        <div class="stat-card"><div class="lbl">Orders Received</div><div class="val">128</div><div class="chg">+8 today</div></div>
+        <div class="stat-card"><div class="lbl">Seller Rating</div><div class="val">4.8★</div><div class="chg">96 reviews</div></div>
+      </div>
+      <div class="seller-form">
+        <p class="section-title" style="margin-bottom:1.25rem"><span></span>List a New Product</p>
+        <div class="form-grid">
+          <div class="form-group"><label>Product Name</label><input placeholder="e.g. OPC Cement 50kg Bag"></div>
+          <div class="form-group"><label>Category</label>
+            <select>
+              <option>Building Materials</option>
+              <option>Cement & Concrete</option>
+              <option>Steel & Metal</option>
+              <option>Timber & Wood</option>
+              <option>Tools & Hardware</option>
+              <option>Electrical</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Unit Price ($)</label><input type="number" placeholder="0.00"></div>
+          <div class="form-group"><label>Minimum Order Qty</label><input type="number" placeholder="e.g. 10"></div>
+          <div class="form-group"><label>Stock Available</label><input type="number" placeholder="e.g. 2000"></div>
+          <div class="form-group"><label>Lead Time (days)</label><input type="number" placeholder="e.g. 3"></div>
+        </div>
+        <div class="form-group"><label>Product Description</label><textarea placeholder="Describe specifications, grade, dimensions, certifications..."></textarea></div>
+        <div class="upload-area" onclick="showToast('Upload dialog would open here')">
+          📷 Click to upload product images (JPG, PNG — max 5 images)
+        </div>
+        <div style="display:flex;gap:10px;margin-top:1rem">
+          <button class="btn-accent" style="flex:1;padding:11px" onclick="showToast('Product listed successfully!')">Publish Listing</button>
+          <button class="btn-ghost" style="padding:11px 20px;border-radius:6px;background:#f4f6f9;color:var(--text2);border:1px solid var(--border);cursor:pointer" onclick="showToast('Saved as draft')">Save Draft</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div id="tab-orders" style="display:none">
+      <p class="section-title" style="margin-bottom:1rem"><span></span>My Orders</p>
+      <div id="ordersList"></div>
+      <div style="margin-top:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;color:var(--text3);font-size:14px" id="emptyOrders">
+        No orders yet. Start browsing the marketplace!
+      </div>
+    </div>
+
+    <!-- SERVICES TAB (top nav) -->
+    <div id="tab-services" style="display:none">
+      <p class="section-title" style="margin-bottom:1rem"><span></span>Find Subcontractors & Labour</p>
+      <div class="service-grid" id="serviceGrid2"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products=[
+  {id:1,name:"OPC Cement 42.5R — 50kg Bag",cat:"cement",icon:"🏗️",supplier:"Atlas Building Supplies",verified:true,price:8.50,unit:"bag",moq:"50 bags",badge:"hot",rating:4.8,reviews:234},
+  {id:2,name:"Structural Steel I-Beam 150×75×5.5mm",cat:"steel",icon:"🔩",supplier:"MetalPro Ltd",verified:true,price:320,unit:"length",moq:"10 lengths",badge:"bulk",rating:4.6,reviews:89},
+  {id:3,name:"Hardwood Timber Planks 2400×100×50mm",cat:"wood",icon:"🌲",supplier:"TimberCo",verified:false,price:18.90,unit:"piece",moq:"20 pcs",badge:"",rating:4.3,reviews:45},
+  {id:4,name:"Angle Grinder 850W 125mm Disc",cat:"tools",icon:"🔧",supplier:"ToolMax",verified:true,price:74.99,unit:"unit",moq:"1 unit",badge:"new",rating:4.7,reviews:312},
+  {id:5,name:"Ready-Mix Concrete C25 — per m³",cat:"cement",icon:"🪨",supplier:"ConcretePlus",verified:true,price:105,unit:"m³",moq:"5 m³",badge:"",rating:4.5,reviews:167},
+  {id:6,name:"Galvanised Steel Wire Mesh 2.4×1.2m",cat:"steel",icon:"🔗",supplier:"SteelMesh Co",verified:true,price:34.00,unit:"sheet",moq:"20 sheets",badge:"bulk",rating:4.4,reviews:78},
+  {id:7,name:"Scaffold Tube 48.3mm × 3.2m",cat:"steel",icon:"🏗️",supplier:"ScaffoldWorld",verified:false,price:12.50,unit:"tube",moq:"50 tubes",badge:"",rating:4.2,reviews:51},
+  {id:8,name:"Cordless Impact Driver 18V 3Ah Kit",cat:"tools",icon:"🔨",supplier:"ToolMax",verified:true,price:189.99,unit:"kit",moq:"1 kit",badge:"new",rating:4.9,reviews:521},
+  {id:9,name:"Pressure-Treated Pine Timber 4800mm",cat:"wood",icon:"🌲",supplier:"TimberCo",verified:false,price:28.00,unit:"piece",moq:"10 pcs",badge:"",rating:4.1,reviews:33},
+  {id:10,name:"Portland Cement 25kg — Rapid Set",cat:"cement",icon:"🏗️",supplier:"QuikCem Ltd",verified:true,price:6.20,unit:"bag",moq:"100 bags",badge:"hot",rating:4.6,reviews:198},
+  {id:11,name:"Safety Scaffolding Clamps (Pack 50)",cat:"tools",icon:"🔩",supplier:"ScaffoldWorld",verified:true,price:42.00,unit:"pack",moq:"5 packs",badge:"bulk",rating:4.4,reviews:66},
+  {id:12,name:"Structural Plywood 18mm 2440×1220mm",cat:"wood",icon:"🌲",supplier:"PlywoodPro",verified:true,price:46.50,unit:"sheet",moq:"10 sheets",badge:"",rating:4.5,reviews:142},
+];
+
+const services=[
+  {icon:"🏗️",name:"Structural Concrete Works",desc:"Specialist concrete crew for foundations, slabs & retaining walls. Fully insured team of 6.",price:"From $1,800/day",meta:"Available · 4.9★ · 78 projects",color:"#EEF4FF"},
+  {icon:"🔌",name:"Electrical Subcontractor",desc:"Certified electricians for commercial & residential fit-outs. First fix & second fix.",price:"From $95/hr",meta:"Available · 4.8★ · 134 projects",color:"#FFFBEA"},
+  {icon:"🪟",name:"Steel Fabrication & Erection",desc:"Custom steel frames, staircases, mezzanine floors. Full design & build service.",price:"Quote on scope",meta:"Busy — 2 week wait · 4.7★ · 56 projects",color:"#F0F9FF"},
+  {icon:"🔨",name:"Carpentry & Formwork",desc:"Experienced carpenters for formwork, framing, joinery and fit-out works.",price:"From $75/hr",meta:"Available · 4.6★ · 92 projects",color:"#F3FDF0"},
+  {icon:"🚧",name:"Demolition & Groundworks",desc:"Plant hire + operators for site clearance, excavation, and demolition.",price:"From $2,400/day",meta:"Available · 4.8★ · 47 projects",color:"#FFF5F0"},
+  {icon:"🎨",name:"Render & Plastering",desc:"Internal & external plastering, dry-lining, and specialist decorative finishes.",price:"From $55/hr",meta:"Limited slots · 4.7★ · 203 projects",color:"#FAF0FF"},
+];
+
+let cart=[];
+
+function renderProducts(list){
+  const g=document.getElementById('productGrid');
+  if(!list||!list.length){g.innerHTML='<p style="color:var(--text3);font-size:14px">No products found.</p>';document.getElementById('resultCount').textContent=0;return;}
+  document.getElementById('resultCount').textContent=list.length;
+  g.innerHTML=list.map(p=>`
+    <div class="product-card">
+      <div class="product-img">${p.icon}</div>
+      <div class="product-body">
+        ${p.badge?`<span class="badge badge-${p.badge}">${p.badge==='hot'?'Hot Seller':p.badge==='new'?'New Arrival':'Bulk Deal'}</span>`:''}
+        <div class="product-cat">${p.cat}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-supplier">${p.verified?`<span class="verified-badge">✓</span>`:''}${p.supplier}</div>
+        <div class="rating"><span class="stars">★★★★${p.rating>=4.5?'★':'☆'}</span>${p.rating} (${p.reviews})</div>
+        <div class="product-price">$${p.price.toFixed(2)} <span class="product-unit">/${p.unit}</span></div>
+      </div>
+      <div class="product-footer">
+        <span class="product-moq">MOQ: ${p.moq}</span>
+        <button class="btn-cart" onclick="addToCart(${p.id})">+ Cart</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderServices(elId){
+  const g=document.getElementById(elId);
+  if(!g)return;
+  g.innerHTML=services.map(s=>`
+    <div class="service-card">
+      <div class="service-icon" style="background:${s.color}">${s.icon}</div>
+      <div class="service-name">${s.name}</div>
+      <div class="service-desc">${s.desc}</div>
+      <div class="service-price">${s.price}</div>
+      <div class="service-meta">${s.meta}</div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn-cart" style="flex:1;padding:7px" onclick="showToast('Enquiry sent to ${s.name}!')">Enquire</button>
+        <button style="flex:1;padding:7px;border:1px solid var(--border);border-radius:5px;background:#f4f6f9;font-size:12px;font-weight:600;cursor:pointer" onclick="showToast('Viewing profile...')">View Profile</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  const existing=cart.find(x=>x.id===id);
+  if(existing){existing.qty++;}else{cart.push({...p,qty:1});}
+  document.getElementById('cartCount').textContent=cart.reduce((a,x)=>a+x.qty,0);
+  showToast(`${p.name.split('—')[0].trim()} added to cart`);
+}
+
+function showCart(){
+  const tab=document.getElementById('tab-orders');
+  if(!tab)return;
+  showTab('orders');
+  const ol=document.getElementById('ordersList');
+  const emp=document.getElementById('emptyOrders');
+  if(!cart.length){ol.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  const total=cart.reduce((a,x)=>a+x.price*x.qty,0);
+  ol.innerHTML=`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-weight:600;font-size:15px">Cart (${cart.length} items)</div>
+      ${cart.map(item=>`
+        <div style="display:flex;align-items:center;gap:1rem;padding:12px 1.25rem;border-bottom:0.5px solid var(--border)">
+          <span style="font-size:28px">${item.icon}</span>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:500">${item.name}</div>
+            <div style="font-size:12px;color:var(--text3)">${item.supplier}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:700;color:var(--brand)">$${(item.price*item.qty).toFixed(2)}</div>
+            <div style="font-size:12px;color:var(--text3)">Qty: ${item.qty} × $${item.price.toFixed(2)}</div>
+          </div>
+        </div>
+      `).join('')}
+      <div style="padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;background:#f9fafc">
+        <span style="font-size:16px;font-weight:700">Total: $${total.toFixed(2)}</span>
+        <button class="btn-accent" onclick="checkout()">Proceed to Checkout</button>
+      </div>
+    </div>
+  `;
+}
+
+function checkout(){
+  cart=[];
+  document.getElementById('cartCount').textContent=0;
+  document.getElementById('ordersList').innerHTML=`
+    <div style="background:#EAF3DE;border:1px solid #C0DD97;border-radius:var(--radius-lg);padding:1.5rem;text-align:center">
+      <div style="font-size:32px;margin-bottom:8px">✅</div>
+      <div style="font-size:16px;font-weight:700;color:#3B6D11;margin-bottom:4px">Order Placed Successfully!</div>
+      <div style="font-size:13px;color:#639922">Your order has been sent to suppliers. You will receive confirmation within 2 hours.</div>
+    </div>
+  `;
+  document.getElementById('emptyOrders').style.display='none';
+}
+
+function setCat(cat,el){
+  document.querySelectorAll('.cat-item').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  const filtered=cat==='all'?products:products.filter(p=>p.cat===cat||p.cat.includes(cat));
+  renderProducts(filtered);
+}
+
+function filterProducts(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const cf=document.getElementById('catFilter').value;
+  let list=products;
+  if(q)list=list.filter(p=>p.name.toLowerCase().includes(q)||p.supplier.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+  if(cf!=='all'){
+    if(cf==='materials')list=list.filter(p=>['cement','steel','wood'].includes(p.cat));
+    else if(cf==='tools')list=list.filter(p=>p.cat==='tools');
+  }
+  renderProducts(list);
+  showTab('buyer');
+  document.getElementById('subtab-products').style.display='';
+  document.getElementById('subtab-services').style.display='none';
+  document.getElementById('subtab-rfq').style.display='none';
+}
+
+function showTab(name){
+  ['buyer','seller','orders','services'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.style.display=t===name?'':'none';
+  });
+  const sidebar=document.getElementById('sidebarEl');
+  if(sidebar)sidebar.style.display=(name==='buyer'||name==='services')?'':'none';
+}
+
+function switchSubTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  ['products','services','rfq'].forEach(t=>{
+    const el2=document.getElementById('subtab-'+t);
+    if(el2)el2.style.display=t===name?'':'none';
+  });
+  if(name==='services'){renderServices('serviceGrid');}
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+renderProducts(products);
+renderServices('serviceGrid');
+renderServices('serviceGrid2');
+</script>
